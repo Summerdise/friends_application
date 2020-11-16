@@ -3,15 +3,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="60dp">
+    android:layout_height="40dp">
 
     <ImageButton
         android:id="@+id/title_back_button"
         android:layout_width="20dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="15dp"
         android:background="#00000000"
         android:src="@drawable/title_back"
+        android:scaleType="centerInside"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -21,7 +22,7 @@
         android:layout_height="wrap_content"
         android:text="@string/title"
         android:textColor="@color/black"
-        android:textSize="25sp"
+        android:textSize="15sp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/title_photo_button"
@@ -29,9 +30,10 @@
 
     <ImageButton
         android:id="@+id/title_photo_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="15dp"
+        android:scaleType="centerInside"
         android:background="#00000000"
         android:src="@drawable/title_photo"
         app:layout_constraintBottom_toBottomOf="parent"

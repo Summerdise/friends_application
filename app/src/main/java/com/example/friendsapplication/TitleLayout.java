@@ -33,7 +33,17 @@ public class TitleLayout extends ConstraintLayout {
                 ((Activity) getContext()).finish();
             }
         });
-        titlePhotoBtn.setOnClickListener();
-        titlePhotoBtn.setOnLongClickListener();
+        titlePhotoBtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        titlePhotoBtn.setOnLongClickListener(new OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                return false;
+            }
+        });
     }
 }
