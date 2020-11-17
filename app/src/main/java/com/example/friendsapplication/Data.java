@@ -8,16 +8,16 @@ public class Data {
 
     private int type;
     private User user;
-    private List<MomentsItem> momentsItemList;
+    private MomentsItem momentsItem;
 
     public Data(User user) {
         this.type = HEAD;
         this.user = user;
     }
 
-    public Data(List<MomentsItem> momentsItemList) {
+    public Data(MomentsItem momentsItem) {
         this.type = ITEM;
-        this.momentsItemList = momentsItemList;
+        this.momentsItem = momentsItem;
     }
 
     public int getType() {
@@ -32,11 +32,11 @@ public class Data {
         this.user = user;
     }
 
-    public List<MomentsItem> getMomentsItemList() {
-        return momentsItemList;
+    public MomentsItem getMomentsItem() {
+        return momentsItem;
     }
 
-    public void setMomentsItemList(List<MomentsItem> momentsItemList) {
-        this.momentsItemList = momentsItemList;
+    public void setMomentsItem(MomentsItem momentsItem) {
+        this.momentsItem = momentsItem;
     }
 }
