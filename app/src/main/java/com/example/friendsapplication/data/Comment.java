@@ -1,4 +1,4 @@
-package com.example.friendsapplication;
+package com.example.friendsapplication.data;
 
 public class Comment {
     private String fromUserName;

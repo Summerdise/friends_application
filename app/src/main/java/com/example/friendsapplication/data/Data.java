@@ -1,18 +1,16 @@
-package com.example.friendsapplication;
-
-import java.util.List;
+package com.example.friendsapplication.data;
 
 public class Data {
     private static final int HEAD = 1;
     private static final int ITEM = 2;
 
     private int type;
-    private User user;
+    private UserInformation userInformation;
     private MomentsItem momentsItem;
 
-    public Data(User user) {
+    public Data(UserInformation userInformation) {
         this.type = HEAD;
-        this.user = user;
+        this.userInformation = userInformation;
     }
 
     public Data(MomentsItem momentsItem) {
@@ -24,12 +22,12 @@ public class Data {
         return type;
     }
 
-    public User getUser() {
-        return user;
+    public UserInformation getUserInformation() {
+        return userInformation;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserInformation(UserInformation userInformation) {
+        this.userInformation = userInformation;
     }
 
     public MomentsItem getMomentsItem() {

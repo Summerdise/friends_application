@@ -1,30 +1,33 @@
-package com.example.friendsapplication;
+package com.example.friendsapplication.data;
 
+import java.util.Date;
 import java.util.List;
 
 public class MomentsItem {
-    private String name;
+    private String userName;
     private int avatar;
     private String content;
+    private Date pubDate;
     private List<Integer> imageList;
     private List<String> agreeList;
     private List<Comment> commentList;
 
-    public MomentsItem(String name, int avatar, String content, List<Integer> imageList, List<String> agreeList, List<Comment> commentList) {
-        this.name = name;
+    public MomentsItem(String userName, int avatar, String content, Date pubDate, List<Integer> imageList, List<String> agreeList, List<Comment> commentList) {
+        this.userName = userName;
         this.avatar = avatar;
         this.content = content;
+        this.pubDate = pubDate;
         this.imageList = imageList;
         this.agreeList = agreeList;
         this.commentList = commentList;
     }
 
-    public String getName() {
-        return name;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public int getAvatar() {
@@ -41,6 +44,14 @@ public class MomentsItem {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public Date getPubDate() {
+        return pubDate;
+    }
+
+    public void setPubDate(Date pubDate) {
+        this.pubDate = pubDate;
     }
 
     public List<Integer> getImageList() {

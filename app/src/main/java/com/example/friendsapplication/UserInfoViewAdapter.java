@@ -9,6 +9,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.friendsapplication.data.Comment;
+import com.example.friendsapplication.data.Data;
+import com.example.friendsapplication.data.MomentsItem;
+import com.example.friendsapplication.data.UserInformation;
+
 import java.util.List;
 
 public class UserInfoViewAdapter extends RecyclerView.Adapter {
@@ -76,15 +81,15 @@ public class UserInfoViewAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         switch (data.get(position).getType()) {
             case HEAD:
-                User user = data.get(position).getUser();
-                ((HeadViewHolder) holder).backgroundImage.setImageResource(user.getBackgroundImage());
-                ((HeadViewHolder) holder).userName.setText(user.getUserName());
-                ((HeadViewHolder) holder).avatar.setImageResource(user.getAvatar());
+                UserInformation userInformation = data.get(position).getUserInformation();
+                ((HeadViewHolder) holder).backgroundImage.setImageResource(userInformation.getBackgroundImage());
+                ((HeadViewHolder) holder).userName.setText(userInformation.getUserName());
+                ((HeadViewHolder) holder).avatar.setImageResource(userInformation.getAvatar());
                 break;
             case ITEM:
                 MomentsItem momentsItem = data.get(position).getMomentsItem();
                 ((ItemViewHolder) holder).itemAvatar.setImageResource(momentsItem.getAvatar());
-                ((ItemViewHolder) holder).itemUserName.setText(momentsItem.getName());
+                ((ItemViewHolder) holder).itemUserName.setText(momentsItem.getUserName());
                 ((ItemViewHolder) holder).itemContent.setText(momentsItem.getContent());
                 if (momentsItem.getImageList() != null) {
                     ((ItemViewHolder) holder).descriptionImage.setImageResource(momentsItem.getImageList().get(0));
