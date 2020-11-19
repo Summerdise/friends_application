@@ -16,5 +16,8 @@ public interface UserDao {
     public List<User> selectAllUsers();
 
     @Query("SELECT * FROM users_moments WHERE userName = :name")
-    public User selectUser(String name);
+    public List<User> selectUser(String name);
+
+    @Query("SELECT * FROM users_moments WHERE id = 1")
+    public User selectNowUserInformation();
 }

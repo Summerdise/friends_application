@@ -121,9 +121,9 @@ public class UserInfoViewAdapter extends RecyclerView.Adapter {
         StringBuilder stringBuilder = new StringBuilder();
         for (String s : agreeList) {
             stringBuilder.append(s);
-            stringBuilder.append(",");
+            stringBuilder.append(", ");
         }
-        return stringBuilder.substring(0, stringBuilder.length() - 1);
+        return stringBuilder.substring(0, stringBuilder.length() - 2);
     }
 
     public String getCommentsInformation(List<Comment> commentList) {
