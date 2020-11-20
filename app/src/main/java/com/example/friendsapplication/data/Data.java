@@ -1,40 +1,43 @@
 package com.example.friendsapplication.data;
 
+import com.example.friendsapplication.Moment;
+import com.example.friendsapplication.User;
+
 public class Data {
     private static final int HEAD = 1;
     private static final int ITEM = 2;
 
     private int type;
-    private UserInformation userInformation;
-    private MomentsItem momentsItem;
+    private User user;
+    private Moment moment;
 
-    public Data(UserInformation userInformation) {
+    public Data(User user) {
         this.type = HEAD;
-        this.userInformation = userInformation;
+        this.user = user;
     }
 
-    public Data(MomentsItem momentsItem) {
+    public Data(Moment moment) {
         this.type = ITEM;
-        this.momentsItem = momentsItem;
+        this.moment = moment;
     }
 
     public int getType() {
         return type;
     }
 
-    public UserInformation getUserInformation() {
-        return userInformation;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserInformation(UserInformation userInformation) {
-        this.userInformation = userInformation;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public MomentsItem getMomentsItem() {
-        return momentsItem;
+    public Moment getMoment() {
+        return moment;
     }
 
-    public void setMomentsItem(MomentsItem momentsItem) {
-        this.momentsItem = momentsItem;
+    public void setMoment(Moment moment) {
+        this.moment = moment;
     }
 }

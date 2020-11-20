@@ -12,12 +12,12 @@ public interface UserDao {
     @Insert
     public void insertAll(User... users);
 
-    @Query("SELECT * FROM users_moments")
+    @Query("SELECT * FROM users")
     public List<User> selectAllUsers();
 
-    @Query("SELECT * FROM users_moments WHERE userName = :name")
-    public List<User> selectUser(String name);
+    @Query("SELECT * FROM users WHERE id = :userId")
+    public User selectUserById(int userId);
 
-    @Query("SELECT * FROM users_moments WHERE id = 1")
+    @Query("SELECT * FROM users WHERE id = 1")
     public User selectNowUserInformation();
 }

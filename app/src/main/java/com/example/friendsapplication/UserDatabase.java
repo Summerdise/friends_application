@@ -7,7 +7,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-@Database(entities = User.class,version = 1,exportSchema = false)
+@Database(entities = {User.class,Moment.class},version = 1,exportSchema = false)
 @TypeConverters({Converter.class})
 public abstract class UserDatabase extends RoomDatabase {
 
@@ -18,7 +18,7 @@ public abstract class UserDatabase extends RoomDatabase {
             synchronized (UserDatabase.class) {
                 if (database == null) {
                     database = Room.databaseBuilder(context.getApplicationContext(),
-                            UserDatabase.class, "users_database").build();
+                            UserDatabase.class, "users_database").allowMainThreadQueries().build();
                 }
             }
         }
@@ -26,4 +26,5 @@ public abstract class UserDatabase extends RoomDatabase {
     }
 
     public abstract UserDao userDao();
+    public abstract MomentDao momentDao();
 }

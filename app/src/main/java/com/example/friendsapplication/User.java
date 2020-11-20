@@ -3,11 +3,7 @@ package com.example.friendsapplication;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import com.example.friendsapplication.data.MomentsItem;
-
-import java.util.List;
-
-@Entity(tableName = "users_moments")
+@Entity(tableName = "users")
 public class User {
 
     @PrimaryKey(autoGenerate = true)
@@ -16,13 +12,11 @@ public class User {
     private String userName;
     private int avatar;
     private int backgroundImage;
-    private List<MomentsItem> momentsItemList;
 
-    public User(String userName, int avatar, int backgroundImage, List<MomentsItem> momentsItemList) {
+    public User(String userName, int avatar, int backgroundImage) {
         this.userName = userName;
         this.avatar = avatar;
         this.backgroundImage = backgroundImage;
-        this.momentsItemList = momentsItemList;
     }
 
     public int getId() {
@@ -57,11 +51,4 @@ public class User {
         this.backgroundImage = backgroundImage;
     }
 
-    public List<MomentsItem> getMomentsItemList() {
-        return momentsItemList;
-    }
-
-    public void setMomentsItemList(List<MomentsItem> momentsItemList) {
-        this.momentsItemList = momentsItemList;
-    }
 }
