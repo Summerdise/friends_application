@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">FriendsApplication</string>
     <string name="title">朋友圈</string>
+    <string name="create_title_no_image">发表文字</string>
+    <string name="publish_word"><u>发表</u></string>
+    <string name="cancel_word"><u>取消</u></string>
 </resources>

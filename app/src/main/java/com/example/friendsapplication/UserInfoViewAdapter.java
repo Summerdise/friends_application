@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.friendsapplication.data.Comment;
 import com.example.friendsapplication.data.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -112,12 +113,21 @@ public class UserInfoViewAdapter extends RecyclerView.Adapter {
                 if (moment.getImageList() != null) {
                     ((ItemViewHolder) holder).descriptionImage.setImageResource(moment.getImageList().get(0));
                 }
-                if (moment.getAgreeList() != null) {
+                if (moment.getAgreeList() == null || moment.getAgreeList().size() == 0) {
+                    ((ItemViewHolder) holder).agreeIcon.setVisibility(View.GONE);
+                    ((ItemViewHolder) holder).itemUserAgree.setVisibility(View.GONE);
+
+                } else {
+                    ((ItemViewHolder) holder).agreeIcon.setVisibility(View.VISIBLE);
+                    ((ItemViewHolder) holder).itemUserAgree.setVisibility(View.VISIBLE);
                     ((ItemViewHolder) holder).agreeIcon.setImageResource(R.drawable.agree_icon);
                     ((ItemViewHolder) holder).itemUserAgree.setText(getAgreeInformation(moment.getAgreeList()));
                 }
                 if (moment.getCommentList() != null) {
+                    ((ItemViewHolder) holder).itemComment.setVisibility(View.VISIBLE);
                     ((ItemViewHolder) holder).itemComment.setText(getCommentsInformation(moment.getCommentList()));
+                } else {
+                    ((ItemViewHolder) holder).itemComment.setVisibility(View.GONE);
                 }
                 break;
             default:
@@ -141,7 +151,11 @@ public class UserInfoViewAdapter extends RecyclerView.Adapter {
             stringBuilder.append(s);
             stringBuilder.append(", ");
         }
-        return stringBuilder.substring(0, stringBuilder.length() - 2);
+        if (stringBuilder.length() > 2) {
+            return stringBuilder.substring(0, stringBuilder.length() - 2);
+        } else {
+            return stringBuilder.toString();
+        }
     }
 
     public String getCommentsInformation(List<Comment> commentList) {
@@ -153,10 +167,14 @@ public class UserInfoViewAdapter extends RecyclerView.Adapter {
                 stringBuilder.append(comment.getFromUserName() + " 回复 " + comment.getToUserName() + ": " + comment.getComment() + "\n");
             }
         }
-        return stringBuilder.substring(0, stringBuilder.length() - 1);
+        if (stringBuilder.length() > 1) {
+            return stringBuilder.substring(0, stringBuilder.length() - 1);
+        } else {
+            return stringBuilder.toString();
+        }
     }
 
-    public void moreItemShowAndHide(ItemViewHolder itemViewHolder){
+    public void moreItemShowAndHide(ItemViewHolder itemViewHolder) {
         itemViewHolder.itemMoreButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -171,16 +189,21 @@ public class UserInfoViewAdapter extends RecyclerView.Adapter {
         });
     }
 
-    public void isAgreeChange(ItemViewHolder itemViewHolder){
+    public void isAgreeChange(ItemViewHolder itemViewHolder) {
         itemViewHolder.agreeButton.setOnClickListener(v -> {
             int index = itemViewHolder.getAdapterPosition();
-            Moment moment= database.momentDao().selectMomentsById(index);
+            Moment moment = database.momentDao().selectMomentsById(index);
             List<String> agreeList = moment.getAgreeList();
             String nowUserName = data.get(0).getUser().getUserName();
-            if(!agreeList.contains(nowUserName)){
+            if (agreeList == null) {
+                agreeList = new ArrayList<>();
                 agreeList.add(nowUserName);
-            }else{
-                agreeList.remove(nowUserName);
+            } else {
+                if (!agreeList.contains(nowUserName)) {
+                    agreeList.add(nowUserName);
+                } else {
+                    agreeList.remove(nowUserName);
+                }
             }
             moment.setAgreeList(agreeList);
             database.momentDao().updateMoments(moment);

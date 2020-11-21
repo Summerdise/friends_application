@@ -31,12 +31,11 @@
         android:id="@+id/item_more_button"
         android:layout_width="15dp"
         android:layout_height="10dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="5dp"
-        android:src="@drawable/more"
+        android:layout_marginTop="20dp"
         android:background="@color/background_grey"
-        app:layout_constraintBottom_toTopOf="@+id/item_agree_user_list"
-        app:layout_constraintEnd_toEndOf="@+id/item_agree_user_list" />
+        android:src="@drawable/more"
+        app:layout_constraintEnd_toEndOf="@+id/item_content"
+        app:layout_constraintTop_toBottomOf="@+id/description_img" />
 
     <Button
         android:id="@+id/comment_button"
@@ -61,9 +60,10 @@
         android:background="@color/button_color"
         app:layout_constraintBottom_toBottomOf="@+id/comment_button"
         app:layout_constraintEnd_toStartOf="@+id/comment_button" />
+
     <TextView
         android:id="@+id/item_content"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
         android:layout_marginStart="5dp"
@@ -108,12 +108,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
-        android:paddingStart="3dp"
         android:background="@color/background_grey"
+        android:paddingStart="3dp"
         android:textColor="@color/black"
-        tools:text="ad\n"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/item_agree_user_list"
-        app:layout_constraintTop_toBottomOf="@+id/item_agree_user_list" />
+        app:layout_constraintStart_toStartOf="@+id/item_content"
+        app:layout_constraintTop_toBottomOf="@+id/item_agree_user_list"
+        tools:text="ad\n" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

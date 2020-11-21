@@ -2,6 +2,7 @@ package com.example.friendsapplication;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,12 +37,14 @@ public class TitleLayout extends ConstraintLayout {
         titlePhotoBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-
             }
         });
         titlePhotoBtn.setOnLongClickListener(new OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
+                Intent intent = new Intent((Activity) getContext(),NoImageCreateActivity.class);
+                context.startActivity(intent);
+
                 return false;
             }
         });

@@ -49,6 +49,10 @@ public class MainActivity extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        readyForStartShow();
+    }
+
+    public void readyForStartShow(){
         RecyclerView mainRecyclerView = findViewById(R.id.main_recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mainRecyclerView.setLayoutManager(layoutManager);
@@ -56,6 +60,12 @@ public class MainActivity extends AppCompatActivity {
         mainRecyclerView.setAdapter(adapter);
         mainRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        readyForStartShow();
     }
 
     private User initKobe() {
