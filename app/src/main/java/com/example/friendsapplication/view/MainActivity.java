@@ -1,26 +1,27 @@
-package com.example.friendsapplication;
+package com.example.friendsapplication.view;
 
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Bundle;
-import android.widget.Button;
-import android.widget.ImageButton;
-
+import com.example.friendsapplication.R;
+import com.example.friendsapplication.model.UserDatabase;
 import com.example.friendsapplication.data.Comment;
 import com.example.friendsapplication.data.Data;
+import com.example.friendsapplication.model.Moment;
+import com.example.friendsapplication.model.User;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -36,23 +37,27 @@ public class MainActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 //        ButterKnife.bind(this);
-        Thread loadingTread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-//                initDatabase();
-                getMainDataList();
-            }
-        });
-        loadingTread.start();
-        try {
-            loadingTread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        //event.handler
+//        loadingAndShowContent();
+    }
+
+    class LoadingHandler extends Handler{
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+//            initDatabase();
+            getMainDataList();
         }
+    }
+
+    public void loadingAndShowContent(){
+        LoadingHandler handler = new LoadingHandler();
+        Message msg = Message.obtain();
+        handler.sendMessage(msg);
         readyForStartShow();
     }
 
-    public void readyForStartShow(){
+    public void readyForStartShow() {
         RecyclerView mainRecyclerView = findViewById(R.id.main_recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mainRecyclerView.setLayoutManager(layoutManager);
@@ -65,7 +70,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        readyForStartShow();
+        dataList = new ArrayList<>();
+        loadingAndShowContent();
     }
 
     private User initKobe() {

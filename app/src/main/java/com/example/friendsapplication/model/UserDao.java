@@ -1,8 +1,10 @@
-package com.example.friendsapplication;
+package com.example.friendsapplication.model;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
+
+import com.example.friendsapplication.model.User;
 
 import java.util.List;
 

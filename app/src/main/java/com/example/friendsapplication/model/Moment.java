@@ -1,4 +1,4 @@
-package com.example.friendsapplication;
+package com.example.friendsapplication.model;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -13,6 +13,7 @@ public class Moment {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
+
     private int userId;
     private String userName;
     private int avatar;

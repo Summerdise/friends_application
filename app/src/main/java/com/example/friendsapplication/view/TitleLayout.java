@@ -1,4 +1,4 @@
-package com.example.friendsapplication;
+package com.example.friendsapplication.view;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,6 +11,8 @@ import android.widget.ImageButton;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+
+import com.example.friendsapplication.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,7 +44,7 @@ public class TitleLayout extends ConstraintLayout {
         titlePhotoBtn.setOnLongClickListener(new OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Intent intent = new Intent((Activity) getContext(),NoImageCreateActivity.class);
+                Intent intent = new Intent((Activity) getContext(), NoImageCreateActivity.class);
                 context.startActivity(intent);
 
                 return false;

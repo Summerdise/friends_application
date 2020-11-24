@@ -1,4 +1,4 @@
-package com.example.friendsapplication;
+package com.example.friendsapplication.view;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,13 +12,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.friendsapplication.R;
 import com.example.friendsapplication.data.Comment;
 import com.example.friendsapplication.data.Data;
+import com.example.friendsapplication.model.Moment;
+import com.example.friendsapplication.model.User;
+import com.example.friendsapplication.model.UserDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.BindView;
 
 public class UserInfoViewAdapter extends RecyclerView.Adapter {
 

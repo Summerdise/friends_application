@@ -1,4 +1,4 @@
-package com.example.friendsapplication;
+package com.example.friendsapplication.model;
 
 import android.content.Context;
 
@@ -7,7 +7,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-@Database(entities = {User.class,Moment.class},version = 1,exportSchema = false)
+@Database(entities = {User.class, Moment.class},version = 1,exportSchema = false)
 @TypeConverters({Converter.class})
 public abstract class UserDatabase extends RoomDatabase {
 

@@ -1,7 +1,7 @@
 package com.example.friendsapplication.data;
 
-import com.example.friendsapplication.Moment;
-import com.example.friendsapplication.User;
+import com.example.friendsapplication.model.Moment;
+import com.example.friendsapplication.model.User;
 
 public class Data {
     private static final int HEAD = 1;
