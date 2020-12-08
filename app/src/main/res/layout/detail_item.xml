@@ -81,6 +81,29 @@
         app:layout_constraintStart_toStartOf="@+id/item_agree_user_list"
         app:layout_constraintTop_toBottomOf="@+id/item_content" />
 
+
+    <EditText
+        android:id="@+id/add_comment_edit"
+        android:inputType="text"
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:padding="0dp"
+        android:textSize="12sp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@+id/item_user_name"
+        app:layout_constraintTop_toBottomOf="@+id/item_more_button" />
+
+    <Button
+        android:id="@+id/add_comment_btn"
+        android:layout_width="40dp"
+        android:layout_height="30dp"
+        android:visibility="gone"
+        android:background="@color/green_background"
+        android:text="@string/publish_word"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="@+id/item_more_button"
+        app:layout_constraintTop_toTopOf="@+id/add_comment_edit" />
+
     <TextView
         android:id="@+id/item_agree_user_list"
         android:layout_width="300dp"
@@ -90,7 +113,7 @@
         android:background="@color/background_grey"
         android:textColor="@color/nameColor"
         app:layout_constraintStart_toStartOf="@+id/item_content"
-        app:layout_constraintTop_toBottomOf="@+id/comment_button" />
+        app:layout_constraintTop_toBottomOf="@+id/add_comment_edit" />
 
     <ImageView
         android:id="@+id/agree_icon"

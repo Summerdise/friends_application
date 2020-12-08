@@ -11,4 +11,5 @@
     <color name="background_grey">#f6f7f8</color>
     <color name="up_word_grey">#C0C0C0</color>
     <color name="button_color">#696969</color>
+    <color name="green_background">#32CD32</color>
 </resources>

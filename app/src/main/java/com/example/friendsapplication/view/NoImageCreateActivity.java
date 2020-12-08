@@ -38,16 +38,7 @@ public class NoImageCreateActivity extends AppCompatActivity {
         userDatabase = UserDatabase.getDatabase(this);
 
         inputText.addTextChangedListener(new TextChangedWatcher());
-        publishButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String inputContent = String.valueOf(inputText.getText());
-                User nowUser = userDatabase.userDao().selectNowUserInformation();
-                Moment moment = new Moment(nowUser.getId(), nowUser.getUserName(), nowUser.getAvatar(), inputContent, null, null, null, null);
-                userDatabase.momentDao().insertAll(moment);
-                finish();
-            }
-        });
+        publishButton.setOnClickListener(new PublishButtonListener());
     }
 
     class TextChangedWatcher implements TextWatcher {
@@ -70,6 +61,18 @@ public class NoImageCreateActivity extends AppCompatActivity {
                 publishButton.setTextColor(Color.rgb(255, 255, 255));
                 publishButton.setBackgroundColor(Color.rgb(50, 205, 50));
             }
+        }
+    }
+
+    class PublishButtonListener implements View.OnClickListener{
+
+        @Override
+        public void onClick(View v) {
+            String inputContent = String.valueOf(inputText.getText());
+            User nowUser = userDatabase.userDao().selectNowUserInformation();
+            Moment moment = new Moment(nowUser.getId(), nowUser.getUserName(), nowUser.getAvatar(), inputContent, null, null, null, null);
+            userDatabase.momentDao().insertAll(moment);
+            finish();
         }
     }
 }

@@ -1,10 +1,13 @@
 package com.example.friendsapplication.view;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -62,6 +65,8 @@ public class UserInfoViewAdapter extends RecyclerView.Adapter {
         ImageButton itemMoreButton;
         Button agreeButton;
         Button commentButton;
+        EditText commentEditText;
+        Button commentPublishButton;
 
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -76,6 +81,8 @@ public class UserInfoViewAdapter extends RecyclerView.Adapter {
             itemMoreButton = itemView.findViewById(R.id.item_more_button);
             agreeButton = itemView.findViewById(R.id.agree_button);
             commentButton = itemView.findViewById(R.id.comment_button);
+            commentEditText=itemView.findViewById(R.id.add_comment_edit);
+            commentPublishButton = itemView.findViewById(R.id.add_comment_btn);
         }
     }
 
@@ -92,6 +99,8 @@ public class UserInfoViewAdapter extends RecyclerView.Adapter {
                 ItemViewHolder itemViewHolder = new ItemViewHolder(itemView);
                 moreItemShowAndHide(itemViewHolder);
                 isAgreeChange(itemViewHolder);
+                commentEditShowAndHide(itemViewHolder);
+                addComment(itemViewHolder);
                 return itemViewHolder;
             default:
                 return null;
@@ -191,6 +200,20 @@ public class UserInfoViewAdapter extends RecyclerView.Adapter {
         });
     }
 
+    public void commentEditShowAndHide(ItemViewHolder itemViewHolder) {
+        itemViewHolder.commentButton.setOnClickListener(v -> {
+            if (itemViewHolder.commentEditText.getVisibility() == View.GONE) {
+                itemViewHolder.commentEditText.setVisibility(View.VISIBLE);
+                itemViewHolder.commentPublishButton.setVisibility(View.VISIBLE);
+                itemViewHolder.agreeButton.setVisibility(View.INVISIBLE);
+                itemViewHolder.commentButton.setVisibility(View.INVISIBLE);
+            }else{
+                itemViewHolder.commentEditText.setVisibility(View.GONE);
+                itemViewHolder.commentPublishButton.setVisibility(View.GONE);
+            }
+        });
+    }
+
     public void isAgreeChange(ItemViewHolder itemViewHolder) {
         itemViewHolder.agreeButton.setOnClickListener(v -> {
             int index = itemViewHolder.getAdapterPosition();
@@ -214,18 +237,33 @@ public class UserInfoViewAdapter extends RecyclerView.Adapter {
         });
     }
 
-//    public void addComment(ItemViewHolder itemViewHolder){
-//        itemViewHolder.agreeButton.setOnClickListener(v -> {
-//            int index = itemViewHolder.getAdapterPosition();
-//            Moment moment= database.momentDao().selectMomentsById(index);
-//            List<Comment> commentList = moment.getCommentList();
-//            String nowUserName = data.get(0).getUser().getUserName();
-//
-//
-//            moment.setCommentList(commentList);
-//            database.momentDao().updateMoments(moment);
-//            data.get(index).setMoment(moment);
-//            notifyDataSetChanged();
-//        });
-//    }
+    public void addComment(ItemViewHolder itemViewHolder){
+        itemViewHolder.commentPublishButton.setOnClickListener(v -> {
+            int index = itemViewHolder.getAdapterPosition();
+            Moment moment= database.momentDao().selectMomentsById(index);
+            List<Comment> commentList = moment.getCommentList();
+            String nowUserName = data.get(0).getUser().getUserName();
+            String replyContent = String.valueOf(itemViewHolder.commentEditText.getText());
+            Comment newComment = new Comment(nowUserName,replyContent);
+            if(commentList==null){
+                commentList = new ArrayList<>();
+            }
+            commentList.add(newComment);
+            moment.setCommentList(commentList);
+            database.momentDao().updateMoments(moment);
+            data.get(index).setMoment(moment);
+            itemViewHolder.commentEditText.setVisibility(View.GONE);
+            itemViewHolder.commentPublishButton.setVisibility(View.GONE);
+            closeKeyboard((Activity) context);
+            notifyDataSetChanged();
+        });
+    }
+
+    public static void closeKeyboard(Activity activity) {
+        InputMethodManager imm =  (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if(imm != null) {
+            imm.hideSoftInputFromWindow(activity.getWindow().getDecorView().getWindowToken(), 0);
+        }
+    }
+
 }

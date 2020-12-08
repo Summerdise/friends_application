@@ -2,7 +2,9 @@ package com.example.friendsapplication.view;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -12,11 +14,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.friendsapplication.R;
-import com.example.friendsapplication.model.UserDatabase;
 import com.example.friendsapplication.data.Comment;
 import com.example.friendsapplication.data.Data;
 import com.example.friendsapplication.model.Moment;
 import com.example.friendsapplication.model.User;
+import com.example.friendsapplication.model.UserDatabase;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
     List<Data> dataList = new ArrayList<>();
     UserDatabase database;
-
+    private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,25 +38,36 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
-//        ButterKnife.bind(this);
-        //event.handler
-//        loadingAndShowContent();
     }
 
-    class LoadingHandler extends Handler{
+    class LoadingHandler extends Handler {
         @Override
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
 //            initDatabase();
             getMainDataList();
+            Handler mainHandler = new Handler(Looper.getMainLooper());
+            mainHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    Log.e(TAG,Thread.currentThread().getName());
+                    readyForStartShow();
+                }
+            });
         }
     }
 
-    public void loadingAndShowContent(){
-        LoadingHandler handler = new LoadingHandler();
-        Message msg = Message.obtain();
-        handler.sendMessage(msg);
-        readyForStartShow();
+    public void loadingAndShowContent() {
+        new Thread() {
+            @Override
+            public void run() {
+                Looper.prepare();
+                LoadingHandler handler = new LoadingHandler();
+                Message msg = Message.obtain();
+                handler.sendMessage(msg);
+                Looper.loop();
+            }
+        }.start();
     }
 
     public void readyForStartShow() {
@@ -64,13 +77,11 @@ public class MainActivity extends AppCompatActivity {
         UserInfoViewAdapter adapter = new UserInfoViewAdapter(dataList, this);
         mainRecyclerView.setAdapter(adapter);
         mainRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        dataList = new ArrayList<>();
         loadingAndShowContent();
     }
 
@@ -102,7 +113,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void getMainDataList() {
+        Log.e(TAG, Thread.currentThread().getName());
         database = UserDatabase.getDatabase(this);
+        dataList.clear();
         User nowUser = database.userDao().selectNowUserInformation();
         dataList.add(new Data(nowUser));
         List<Moment> momentList = database.momentDao().selectAllMoments();

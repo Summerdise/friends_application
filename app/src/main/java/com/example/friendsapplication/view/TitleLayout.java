@@ -39,6 +39,8 @@ public class TitleLayout extends ConstraintLayout {
         titlePhotoBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent((Activity) getContext(),ImageCreateActivity.class);
+                context.startActivity(intent);
             }
         });
         titlePhotoBtn.setOnLongClickListener(new OnLongClickListener() {
