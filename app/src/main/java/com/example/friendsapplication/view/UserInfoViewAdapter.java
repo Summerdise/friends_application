@@ -18,9 +18,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.friendsapplication.R;
 import com.example.friendsapplication.data.Comment;
 import com.example.friendsapplication.data.Data;
-import com.example.friendsapplication.model.Moment;
-import com.example.friendsapplication.model.User;
-import com.example.friendsapplication.model.UserDatabase;
+import com.example.friendsapplication.data.Moment;
+import com.example.friendsapplication.data.User;
+import com.example.friendsapplication.data.UserDatabase;
 
 import java.util.ArrayList;
 import java.util.List;

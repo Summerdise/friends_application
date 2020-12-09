@@ -1,4 +1,4 @@
-package com.example.friendsapplication.model;
+package com.example.friendsapplication.data;
 
 import androidx.room.TypeConverter;
 
