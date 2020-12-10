@@ -1,4 +1,4 @@
-package com.example.friendsapplication.Presenter;
+package com.example.friendsapplication.presenter;
 
 import android.os.Handler;
 import android.os.Looper;

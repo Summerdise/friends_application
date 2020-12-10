@@ -1,4 +1,4 @@
-package com.example.friendsapplication.Presenter;
+package com.example.friendsapplication.presenter;
 
 import com.example.friendsapplication.base.BasePresenter;
 import com.example.friendsapplication.model.ImageCreateModel;

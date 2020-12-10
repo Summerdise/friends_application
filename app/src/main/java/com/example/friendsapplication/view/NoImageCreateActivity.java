@@ -9,7 +9,7 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.ActionBar;
 
-import com.example.friendsapplication.Presenter.NoImageCreatePresenter;
+import com.example.friendsapplication.presenter.NoImageCreatePresenter;
 import com.example.friendsapplication.R;
 import com.example.friendsapplication.base.BaseActivity;
 

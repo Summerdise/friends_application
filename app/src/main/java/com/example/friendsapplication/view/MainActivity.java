@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.friendsapplication.Presenter.MainPresenter;
+import com.example.friendsapplication.presenter.MainPresenter;
 import com.example.friendsapplication.R;
 import com.example.friendsapplication.base.BaseActivity;
 import com.example.friendsapplication.data.Data;

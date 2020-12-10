@@ -24,7 +24,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
-import com.example.friendsapplication.Presenter.ImageCreatePresenter;
+import com.example.friendsapplication.presenter.ImageCreatePresenter;
 import com.example.friendsapplication.R;
 import com.example.friendsapplication.base.BaseActivity;
 
