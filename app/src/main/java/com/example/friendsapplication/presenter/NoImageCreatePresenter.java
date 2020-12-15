@@ -1,23 +1,26 @@
 package com.example.friendsapplication.presenter;
 
+import android.os.RemoteException;
+
+import com.example.friendsapplication.MyApplication;
 import com.example.friendsapplication.base.BasePresenter;
-import com.example.friendsapplication.data.Moment;
-import com.example.friendsapplication.data.User;
-import com.example.friendsapplication.data.UserDatabase;
 import com.example.friendsapplication.model.NoImageCreateModel;
 import com.example.friendsapplication.view.NoImageCreateActivity;
+import com.example.friendsservice.Moment;
+import com.example.friendsservice.ServiceFriendInterface;
+import com.example.friendsservice.User;
 
 public class NoImageCreatePresenter extends BasePresenter<NoImageCreateModel, NoImageCreateActivity> {
 
 
     private NoImageCreateActivity mNoImageCreateActivity;
     private NoImageCreateModel mNoImageCreateModel;
-    private UserDatabase userDatabase;
-
+    private ServiceFriendInterface mServiceFriendInterface;
 
     public NoImageCreatePresenter(NoImageCreateActivity mNoImageCreateActivity) {
         this.mNoImageCreateModel = getModelInstance();
         this.mNoImageCreateActivity = mNoImageCreateActivity;
+        mServiceFriendInterface = MyApplication.getServiceInterface();
     }
 
     @Override
@@ -25,10 +28,13 @@ public class NoImageCreatePresenter extends BasePresenter<NoImageCreateModel, No
         return new NoImageCreateModel(this);
     }
 
-    public void updateNewNoImageMoment(String inputContent) {
-        userDatabase = UserDatabase.getDatabase(mNoImageCreateActivity.getApplication());
-        User nowUser = userDatabase.userDao().selectNowUserInformation();
-        Moment moment = new Moment(nowUser.getId(), nowUser.getUserName(), nowUser.getAvatar(), inputContent, null, null, null, null);
-        userDatabase.momentDao().insertAll(moment);
+    public void updateNewNoImageMoment(String inputContent) throws RemoteException {
+        User nowUser = mServiceFriendInterface.getNowUser();
+        Moment moment = new Moment(nowUser.getId(),
+                nowUser.getUserName(),
+                nowUser.getAvatar(),
+                inputContent,
+                null, null, null, null);
+//        mServiceFriendInterface.
     }
 }

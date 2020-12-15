@@ -1,6 +1,10 @@
 package com.example.friendsapplication.view;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.os.RemoteException;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -9,6 +13,7 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.ActionBar;
 
+import com.example.friendsapplication.MyApplication;
 import com.example.friendsapplication.presenter.NoImageCreatePresenter;
 import com.example.friendsapplication.R;
 import com.example.friendsapplication.base.BaseActivity;
@@ -36,6 +41,13 @@ public class NoImageCreateActivity extends BaseActivity<NoImageCreatePresenter> 
     }
 
     @Override
+    public void initService() {
+        Intent intent = new Intent();
+        intent.setComponent(new ComponentName("com.example.friendsservice","com.example.friendsservice.MyFriendService"));
+        bindService(intent, MyApplication.getServiceConnection(), Context.BIND_AUTO_CREATE);
+    }
+
+    @Override
     public void initListener() {
         inputText.addTextChangedListener(new TextChangedWatcher());
         publishButton.setOnClickListener(new PublishButtonListener());
@@ -53,7 +65,7 @@ public class NoImageCreateActivity extends BaseActivity<NoImageCreatePresenter> 
 
     @Override
     public void destroy() {
-
+        unbindService(MyApplication.getServiceConnection());
     }
 
     @Override
@@ -84,7 +96,11 @@ public class NoImageCreateActivity extends BaseActivity<NoImageCreatePresenter> 
         @Override
         public void onClick(View v) {
             String inputContent = String.valueOf(inputText.getText());
-            getPresenterListener().updateNewNoImageMoment(inputContent);
+            try {
+                getPresenterListener().updateNewNoImageMoment(inputContent);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
             finish();
         }
     }

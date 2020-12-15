@@ -1,11 +1,11 @@
-package com.example.friendsapplication.data;
+package com.example.friendsservice.dataHandle;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.example.friendsapplication.data.Moment;
+import com.example.friendsservice.Moment;
 
 import java.util.List;
 

@@ -2,7 +2,9 @@ package com.example.friendsapplication.view;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.content.ComponentName;
 import android.content.ContentUris;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -24,6 +26,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
+import com.example.friendsapplication.MyApplication;
 import com.example.friendsapplication.presenter.ImageCreatePresenter;
 import com.example.friendsapplication.R;
 import com.example.friendsapplication.base.BaseActivity;
@@ -63,6 +66,13 @@ public class ImageCreateActivity extends BaseActivity<ImageCreatePresenter> {
     }
 
     @Override
+    public void initService() {
+        Intent intent = new Intent();
+        intent.setComponent(new ComponentName("com.example.friendsservice","com.example.friendsservice.MyFriendService"));
+        bindService(intent, MyApplication.getServiceConnection(), Context.BIND_AUTO_CREATE);
+    }
+
+    @Override
     public void initListener() {
         addImageButton.setOnClickListener(new ChooseImageFromCamera());
         addImageButton.setOnLongClickListener(new ChooseImageFromAlbum());
@@ -80,7 +90,7 @@ public class ImageCreateActivity extends BaseActivity<ImageCreatePresenter> {
 
     @Override
     public void destroy() {
-
+        unbindService(MyApplication.getServiceConnection());
     }
 
     @Override

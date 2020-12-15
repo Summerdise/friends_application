@@ -1,8 +1,8 @@
-package com.example.friendsapplication.data;
+package com.example.friendsservice.dataHandle;
 
 import androidx.room.TypeConverter;
 
-import com.example.friendsapplication.data.Comment;
+import com.example.friendsservice.Comment;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -24,18 +24,6 @@ public class Converter {
         DateTypeToken myTypeToken = new DateTypeToken();
         Date date = gson.fromJson(string, myTypeToken.getType());
         return date;
-    }
-
-    @TypeConverter
-    public String intListToString(List<Integer> list) {
-        return gson.toJson(list);
-    }
-
-    @TypeConverter
-    public List<Integer> stringToIntList(String string) {
-        IntListTypeToken myTypeToken = new IntListTypeToken();
-        List<Integer> integerList = gson.fromJson(string, myTypeToken.getType());
-        return integerList;
     }
 
     @TypeConverter
@@ -65,8 +53,6 @@ public class Converter {
 
 
     class DateTypeToken extends TypeToken<Date> {
-    }
-    class IntListTypeToken extends TypeToken<List<Integer>> {
     }
 
     class StringListTypeToken extends TypeToken<List<String>> {

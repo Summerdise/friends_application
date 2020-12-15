@@ -1,5 +1,8 @@
 package com.example.friendsapplication.view;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 
 import androidx.appcompat.app.ActionBar;
@@ -7,10 +10,11 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.friendsapplication.MyApplication;
 import com.example.friendsapplication.presenter.MainPresenter;
 import com.example.friendsapplication.R;
 import com.example.friendsapplication.base.BaseActivity;
-import com.example.friendsapplication.data.Data;
+import com.example.friendsservice.Data;
 
 import java.util.List;
 
@@ -34,6 +38,13 @@ public class MainActivity extends BaseActivity<MainPresenter> {
     }
 
     @Override
+    public void initService() {
+        Intent intent = new Intent();
+        intent.setComponent(new ComponentName("com.example.friendsservice","com.example.friendsservice.MyFriendService"));
+        bindService(intent, MyApplication.getServiceConnection(), Context.BIND_AUTO_CREATE);
+    }
+
+    @Override
     public void initListener() {
 
     }
@@ -50,7 +61,7 @@ public class MainActivity extends BaseActivity<MainPresenter> {
 
     @Override
     public void destroy() {
-
+        unbindService(MyApplication.getServiceConnection());
     }
 
     @Override

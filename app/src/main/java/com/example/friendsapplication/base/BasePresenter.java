@@ -10,6 +10,7 @@ public abstract class BasePresenter<M extends BaseModel, V extends BaseActivity>
         this.mModel = getModelInstance();
     }
 
+
     public void bindView(V mView){
         this.mView = mView;
     }

@@ -1,29 +1,26 @@
-package com.example.friendsapplication.data;
+package com.example.friendsservice;
 
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-import com.example.friendsapplication.data.Comment;
 
 import java.util.Date;
 import java.util.List;
 
-@Entity(tableName = "moments")
-public class Moment {
+public class Moment implements Parcelable {
 
-    @PrimaryKey(autoGenerate = true)
     private int id;
 
     private int userId;
     private String userName;
-    private int avatar;
+    private String avatar;
     private String content;
     private Date pubDate;
-    private List<Integer> imageList;
+    private List<String> imageList;
     private List<String> agreeList;
     private List<Comment> commentList;
 
-    public Moment(int userId, String userName, int avatar, String content, Date pubDate, List<Integer> imageList, List<String> agreeList, List<Comment> commentList) {
+    public Moment(int userId, String userName, String avatar, String content, Date pubDate, List<String> imageList, List<String> agreeList, List<Comment> commentList) {
         this.userId = userId;
         this.userName = userName;
         this.avatar = avatar;
@@ -33,6 +30,28 @@ public class Moment {
         this.agreeList = agreeList;
         this.commentList = commentList;
     }
+
+    protected Moment(Parcel in) {
+        id = in.readInt();
+        userId = in.readInt();
+        userName = in.readString();
+        avatar = in.readString();
+        content = in.readString();
+        agreeList = in.createStringArrayList();
+        commentList = in.createTypedArrayList(Comment.CREATOR);
+    }
+
+    public static final Creator<Moment> CREATOR = new Creator<Moment>() {
+        @Override
+        public Moment createFromParcel(Parcel in) {
+            return new Moment(in);
+        }
+
+        @Override
+        public Moment[] newArray(int size) {
+            return new Moment[size];
+        }
+    };
 
     public int getId() {
         return id;
@@ -58,11 +77,11 @@ public class Moment {
         this.userName = userName;
     }
 
-    public int getAvatar() {
+    public String getAvatar() {
         return avatar;
     }
 
-    public void setAvatar(int avatar) {
+    public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
 
@@ -82,11 +101,11 @@ public class Moment {
         this.pubDate = pubDate;
     }
 
-    public List<Integer> getImageList() {
+    public List<String> getImageList() {
         return imageList;
     }
 
-    public void setImageList(List<Integer> imageList) {
+    public void setImageList(List<String> imageList) {
         this.imageList = imageList;
     }
 
@@ -104,5 +123,21 @@ public class Moment {
 
     public void setCommentList(List<Comment> commentList) {
         this.commentList = commentList;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeInt(userId);
+        dest.writeString(userName);
+        dest.writeString(avatar);
+        dest.writeString(content);
+        dest.writeStringList(agreeList);
+        dest.writeTypedList(commentList);
     }
 }

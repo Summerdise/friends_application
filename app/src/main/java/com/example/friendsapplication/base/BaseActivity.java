@@ -17,6 +17,7 @@ public abstract class BaseActivity<P extends BasePresenter > extends AppCompatAc
 
         initData();
         initView();
+        initService();
         initListener();
         mPresenter = getPresenterListener();
         mPresenter.bindView(this);
@@ -24,6 +25,7 @@ public abstract class BaseActivity<P extends BasePresenter > extends AppCompatAc
 
     public abstract void initView();
     public abstract void initData();
+    public abstract void initService();
     public abstract void initListener();
     public abstract int getContentViewID();
     public abstract P getPresenterListener();

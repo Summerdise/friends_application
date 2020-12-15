@@ -2,6 +2,7 @@ package com.example.friendsapplication.view;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.RemoteException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +16,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.example.friendsapplication.MyApplication;
 import com.example.friendsapplication.R;
-import com.example.friendsapplication.data.Comment;
-import com.example.friendsapplication.data.Data;
-import com.example.friendsapplication.data.Moment;
-import com.example.friendsapplication.data.User;
-import com.example.friendsapplication.data.UserDatabase;
+import com.example.friendsservice.Comment;
+import com.example.friendsservice.Data;
+import com.example.friendsservice.Moment;
+import com.example.friendsservice.ServiceFriendInterface;
+import com.example.friendsservice.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,14 +33,14 @@ public class UserInfoViewAdapter extends RecyclerView.Adapter {
     private static final int HEAD = 1;
     private static final int ITEM = 2;
 
-    Context context;
-    UserDatabase database;
+    private Context context;
+    private ServiceFriendInterface mServiceFriendInterface;
     List<Data> data;
 
     public UserInfoViewAdapter(List<Data> data, Context context) {
         this.data = data;
         this.context = context;
-        database = UserDatabase.getDatabase(context);
+        mServiceFriendInterface = MyApplication.getServiceInterface();
     }
 
     static class HeadViewHolder extends RecyclerView.ViewHolder {
@@ -112,17 +115,17 @@ public class UserInfoViewAdapter extends RecyclerView.Adapter {
         switch (data.get(position).getType()) {
             case HEAD:
                 User userInformation = data.get(position).getUser();
-                ((HeadViewHolder) holder).backgroundImage.setImageResource(userInformation.getBackgroundImage());
+                loadingImageIntoView(context,userInformation.getBackgroundImage(),((HeadViewHolder) holder).backgroundImage);
                 ((HeadViewHolder) holder).userName.setText(userInformation.getUserName());
-                ((HeadViewHolder) holder).avatar.setImageResource(userInformation.getAvatar());
+                loadingImageIntoView(context,userInformation.getAvatar(),((HeadViewHolder) holder).avatar);
                 break;
             case ITEM:
                 Moment moment = data.get(position).getMoment();
-                ((ItemViewHolder) holder).itemAvatar.setImageResource(moment.getAvatar());
+                loadingImageIntoView(context,moment.getAvatar(),((ItemViewHolder) holder).itemAvatar);
                 ((ItemViewHolder) holder).itemUserName.setText(moment.getUserName());
                 ((ItemViewHolder) holder).itemContent.setText(moment.getContent());
                 if (moment.getImageList() != null) {
-                    ((ItemViewHolder) holder).descriptionImage.setImageResource(moment.getImageList().get(0));
+                    loadingImageIntoView(context,moment.getImageList().get(0),((ItemViewHolder) holder).descriptionImage);
                 }
                 if (moment.getAgreeList() == null || moment.getAgreeList().size() == 0) {
                     ((ItemViewHolder) holder).agreeIcon.setVisibility(View.GONE);
@@ -217,7 +220,12 @@ public class UserInfoViewAdapter extends RecyclerView.Adapter {
     public void isAgreeChange(ItemViewHolder itemViewHolder) {
         itemViewHolder.agreeButton.setOnClickListener(v -> {
             int index = itemViewHolder.getAdapterPosition();
-            Moment moment = database.momentDao().selectMomentsById(index);
+            Moment moment = null;
+            try {
+                moment = mServiceFriendInterface.getMomentById(index);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
             List<String> agreeList = moment.getAgreeList();
             String nowUserName = data.get(0).getUser().getUserName();
             if (agreeList == null) {
@@ -231,7 +239,11 @@ public class UserInfoViewAdapter extends RecyclerView.Adapter {
                 }
             }
             moment.setAgreeList(agreeList);
-            database.momentDao().updateMoments(moment);
+            try {
+                mServiceFriendInterface.updateMoment(moment);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
             data.get(index).setMoment(moment);
             notifyDataSetChanged();
         });
@@ -240,7 +252,12 @@ public class UserInfoViewAdapter extends RecyclerView.Adapter {
     public void addComment(ItemViewHolder itemViewHolder){
         itemViewHolder.commentPublishButton.setOnClickListener(v -> {
             int index = itemViewHolder.getAdapterPosition();
-            Moment moment= database.momentDao().selectMomentsById(index);
+            Moment moment= null;
+            try {
+                moment = mServiceFriendInterface.getMomentById(index);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
             List<Comment> commentList = moment.getCommentList();
             String nowUserName = data.get(0).getUser().getUserName();
             String replyContent = String.valueOf(itemViewHolder.commentEditText.getText());
@@ -250,7 +267,11 @@ public class UserInfoViewAdapter extends RecyclerView.Adapter {
             }
             commentList.add(newComment);
             moment.setCommentList(commentList);
-            database.momentDao().updateMoments(moment);
+            try {
+                mServiceFriendInterface.updateMoment(moment);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
             data.get(index).setMoment(moment);
             itemViewHolder.commentEditText.setVisibility(View.GONE);
             itemViewHolder.commentPublishButton.setVisibility(View.GONE);
@@ -264,6 +285,12 @@ public class UserInfoViewAdapter extends RecyclerView.Adapter {
         if(imm != null) {
             imm.hideSoftInputFromWindow(activity.getWindow().getDecorView().getWindowToken(), 0);
         }
+    }
+
+    public void loadingImageIntoView(Context context,String url, ImageView imageView){
+        Glide.with(context)
+                .load(url)
+                .into(imageView);
     }
 
 }

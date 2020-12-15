@@ -1,2 +1,3 @@
+include ':friendsservice'
 include ':app'
 rootProject.name = "FriendsApplication"

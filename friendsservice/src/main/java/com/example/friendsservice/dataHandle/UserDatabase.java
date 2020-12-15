@@ -1,4 +1,4 @@
-package com.example.friendsapplication.data;
+package com.example.friendsservice.dataHandle;
 
 import android.content.Context;
 
@@ -6,6 +6,9 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
+
+import com.example.friendsservice.Moment;
+import com.example.friendsservice.User;
 
 @Database(entities = {User.class, Moment.class},version = 1,exportSchema = false)
 @TypeConverters({Converter.class})
