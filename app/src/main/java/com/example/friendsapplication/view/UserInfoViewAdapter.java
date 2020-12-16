@@ -84,7 +84,7 @@ public class UserInfoViewAdapter extends RecyclerView.Adapter {
             itemMoreButton = itemView.findViewById(R.id.item_more_button);
             agreeButton = itemView.findViewById(R.id.agree_button);
             commentButton = itemView.findViewById(R.id.comment_button);
-            commentEditText=itemView.findViewById(R.id.add_comment_edit);
+            commentEditText = itemView.findViewById(R.id.add_comment_edit);
             commentPublishButton = itemView.findViewById(R.id.add_comment_btn);
         }
     }
@@ -115,17 +115,17 @@ public class UserInfoViewAdapter extends RecyclerView.Adapter {
         switch (data.get(position).getType()) {
             case HEAD:
                 User userInformation = data.get(position).getUser();
-                loadingImageIntoView(context,userInformation.getBackgroundImage(),((HeadViewHolder) holder).backgroundImage);
+                loadingImageIntoView(context, userInformation.getBackgroundImage(), ((HeadViewHolder) holder).backgroundImage);
                 ((HeadViewHolder) holder).userName.setText(userInformation.getUserName());
-                loadingImageIntoView(context,userInformation.getAvatar(),((HeadViewHolder) holder).avatar);
+                loadingImageIntoView(context, userInformation.getAvatar(), ((HeadViewHolder) holder).avatar);
                 break;
             case ITEM:
                 Moment moment = data.get(position).getMoment();
-                loadingImageIntoView(context,moment.getAvatar(),((ItemViewHolder) holder).itemAvatar);
+                loadingImageIntoView(context, moment.getAvatar(), ((ItemViewHolder) holder).itemAvatar);
                 ((ItemViewHolder) holder).itemUserName.setText(moment.getUserName());
                 ((ItemViewHolder) holder).itemContent.setText(moment.getContent());
                 if (moment.getImageList() != null) {
-                    loadingImageIntoView(context,moment.getImageList().get(0),((ItemViewHolder) holder).descriptionImage);
+                    loadingImageIntoView(context, moment.getImageList().get(0), ((ItemViewHolder) holder).descriptionImage);
                 }
                 if (moment.getAgreeList() == null || moment.getAgreeList().size() == 0) {
                     ((ItemViewHolder) holder).agreeIcon.setVisibility(View.GONE);
@@ -210,7 +210,7 @@ public class UserInfoViewAdapter extends RecyclerView.Adapter {
                 itemViewHolder.commentPublishButton.setVisibility(View.VISIBLE);
                 itemViewHolder.agreeButton.setVisibility(View.INVISIBLE);
                 itemViewHolder.commentButton.setVisibility(View.INVISIBLE);
-            }else{
+            } else {
                 itemViewHolder.commentEditText.setVisibility(View.GONE);
                 itemViewHolder.commentPublishButton.setVisibility(View.GONE);
             }
@@ -220,13 +220,8 @@ public class UserInfoViewAdapter extends RecyclerView.Adapter {
     public void isAgreeChange(ItemViewHolder itemViewHolder) {
         itemViewHolder.agreeButton.setOnClickListener(v -> {
             int index = itemViewHolder.getAdapterPosition();
-            Moment moment = null;
-            try {
-                moment = mServiceFriendInterface.getMomentById(index);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-            List<String> agreeList = moment.getAgreeList();
+            Moment nowMoment = getNowMoment(index);
+            List<String> agreeList = nowMoment.getAgreeList();
             String nowUserName = data.get(0).getUser().getUserName();
             if (agreeList == null) {
                 agreeList = new ArrayList<>();
@@ -238,41 +233,28 @@ public class UserInfoViewAdapter extends RecyclerView.Adapter {
                     agreeList.remove(nowUserName);
                 }
             }
-            moment.setAgreeList(agreeList);
-            try {
-                mServiceFriendInterface.updateMoment(moment);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-            data.get(index).setMoment(moment);
+            nowMoment.setAgreeList(agreeList);
+            updateNowMoment(nowMoment);
+            data.get(index).setMoment(nowMoment);
             notifyDataSetChanged();
         });
     }
 
-    public void addComment(ItemViewHolder itemViewHolder){
+    public void addComment(ItemViewHolder itemViewHolder) {
         itemViewHolder.commentPublishButton.setOnClickListener(v -> {
             int index = itemViewHolder.getAdapterPosition();
-            Moment moment= null;
-            try {
-                moment = mServiceFriendInterface.getMomentById(index);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-            List<Comment> commentList = moment.getCommentList();
+            Moment nowMoment = getNowMoment(index);
+            List<Comment> commentList = nowMoment.getCommentList();
             String nowUserName = data.get(0).getUser().getUserName();
             String replyContent = String.valueOf(itemViewHolder.commentEditText.getText());
-            Comment newComment = new Comment(nowUserName,replyContent);
-            if(commentList==null){
+            Comment newComment = new Comment(nowUserName, replyContent);
+            if (commentList == null) {
                 commentList = new ArrayList<>();
             }
             commentList.add(newComment);
-            moment.setCommentList(commentList);
-            try {
-                mServiceFriendInterface.updateMoment(moment);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-            data.get(index).setMoment(moment);
+            nowMoment.setCommentList(commentList);
+            updateNowMoment(nowMoment);
+            data.get(index).setMoment(nowMoment);
             itemViewHolder.commentEditText.setVisibility(View.GONE);
             itemViewHolder.commentPublishButton.setVisibility(View.GONE);
             closeKeyboard((Activity) context);
@@ -280,14 +262,32 @@ public class UserInfoViewAdapter extends RecyclerView.Adapter {
         });
     }
 
+    public Moment getNowMoment(int index) {
+        Moment moment = null;
+        try {
+            moment = mServiceFriendInterface.getMomentById(index);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        return moment;
+    }
+
+    public void updateNowMoment(Moment moment) {
+        try {
+            mServiceFriendInterface.updateMoment(moment);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void closeKeyboard(Activity activity) {
-        InputMethodManager imm =  (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-        if(imm != null) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
             imm.hideSoftInputFromWindow(activity.getWindow().getDecorView().getWindowToken(), 0);
         }
     }
 
-    public void loadingImageIntoView(Context context,String url, ImageView imageView){
+    public void loadingImageIntoView(Context context, String url, ImageView imageView) {
         Glide.with(context)
                 .load(url)
                 .into(imageView);

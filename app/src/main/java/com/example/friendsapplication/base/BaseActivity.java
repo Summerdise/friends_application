@@ -14,10 +14,9 @@ public abstract class BaseActivity<P extends BasePresenter > extends AppCompatAc
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getContentViewID());
-
+        initService();
         initData();
         initView();
-        initService();
         initListener();
         mPresenter = getPresenterListener();
         mPresenter.bindView(this);

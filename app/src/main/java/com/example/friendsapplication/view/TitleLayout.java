@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
@@ -30,27 +29,15 @@ public class TitleLayout extends ConstraintLayout {
         super(context, attrs);
         LayoutInflater.from(context).inflate(R.layout.title,this);
         ButterKnife.bind(this);
-        titleBackBtn.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((Activity) getContext()).finish();
-            }
+        titleBackBtn.setOnClickListener(v -> ((Activity) getContext()).finish());
+        titlePhotoBtn.setOnClickListener((OnClickListener) v -> {
+            Intent intent = new Intent((Activity) getContext(),ImageCreateActivity.class);
+            context.startActivity(intent);
         });
-        titlePhotoBtn.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent((Activity) getContext(),ImageCreateActivity.class);
-                context.startActivity(intent);
-            }
-        });
-        titlePhotoBtn.setOnLongClickListener(new OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Intent intent = new Intent((Activity) getContext(), NoImageCreateActivity.class);
-                context.startActivity(intent);
-
-                return false;
-            }
+        titlePhotoBtn.setOnLongClickListener((OnLongClickListener) v -> {
+            Intent intent = new Intent((Activity) getContext(), NoImageCreateActivity.class);
+            context.startActivity(intent);
+            return false;
         });
     }
 }

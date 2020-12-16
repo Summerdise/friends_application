@@ -3,6 +3,9 @@ package com.example.friendsapplication.view;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.IBinder;
+import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.ActionBar;
@@ -15,6 +18,7 @@ import com.example.friendsapplication.presenter.MainPresenter;
 import com.example.friendsapplication.R;
 import com.example.friendsapplication.base.BaseActivity;
 import com.example.friendsservice.Data;
+import com.example.friendsservice.ServiceFriendInterface;
 
 import java.util.List;
 
@@ -24,12 +28,12 @@ public class MainActivity extends BaseActivity<MainPresenter> {
     private static final String TAG = "MainActivity";
     RecyclerView mainRecyclerView;
 
+
     @Override
     public void initView() {
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
         mainRecyclerView = findViewById(R.id.main_recycler_view);
-//        initDatabase();
     }
 
     @Override
@@ -40,8 +44,12 @@ public class MainActivity extends BaseActivity<MainPresenter> {
     @Override
     public void initService() {
         Intent intent = new Intent();
+        intent.setPackage("com.example.friendsservice");
         intent.setComponent(new ComponentName("com.example.friendsservice","com.example.friendsservice.MyFriendService"));
-        bindService(intent, MyApplication.getServiceConnection(), Context.BIND_AUTO_CREATE);
+        getApplicationContext().bindService(intent, MyApplication.getServiceConnection(), Context.BIND_AUTO_CREATE);
+
+        Log.d(TAG,"bind over");
+        Log.d(TAG,MyApplication.getServiceInterface().toString());
     }
 
     @Override
@@ -83,33 +91,5 @@ public class MainActivity extends BaseActivity<MainPresenter> {
         mainRecyclerView.setAdapter(adapter);
         mainRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
     }
-//
-//
-//    private User initKobe() {
-//        String userName = "Kobe";
-//        int avatar = R.drawable.avatar;
-//        int backgroundImage = R.drawable.background;
-//        return new User(userName, avatar, backgroundImage);
-//    }
-//
-//    private Moment initKobeMoment(int id, List<Integer> imageList, List<String> agreeList, List<Comment> commentList) {
-//        database = UserDatabase.getDatabase(this);
-//        User nowUser = database.userDao().selectUserById(id);
-//        String userName = nowUser.getUserName();
-//        int avatar = nowUser.getAvatar();
-//        Date pubTime = null;
-//        return new Moment(id, userName, avatar, "cool", pubTime, imageList, agreeList, commentList);
-//    }
-//
-//    public void initDatabase() {
-//        database = UserDatabase.getDatabase(this);
-//        database.userDao().insertAll(initKobe());
-//        List<Integer> imageList = Arrays.asList(R.drawable.background);
-//        List<String> agreeList = Arrays.asList("nash", "jordan", "james");
-//        List<Comment> commentList = Arrays.asList(new Comment("nash", "cool"), new Comment("james", "nash", "you too"));
-//        User user = database.userDao().selectUserById(1);
-//        int userId = user.getId();
-//        database.momentDao().insertAll(initKobeMoment(userId, imageList, agreeList, commentList));
-//    }
 
 }

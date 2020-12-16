@@ -35,6 +35,6 @@ public class NoImageCreatePresenter extends BasePresenter<NoImageCreateModel, No
                 nowUser.getAvatar(),
                 inputContent,
                 null, null, null, null);
-//        mServiceFriendInterface.
+        mServiceFriendInterface.addMoment(moment);
     }
 }

@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.os.RemoteException;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -24,6 +25,8 @@ public class MainPresenter extends BasePresenter<MainModel, MainActivity> {
     private MainActivity mMainActivity;
     private MainModel mMainModel;
     private ServiceFriendInterface mServiceFriendInterface;
+
+    private static final String TAG = "MainActivity";
 
     public MainPresenter(MainActivity mainActivity) {
         this.mMainModel = getModelInstance();
@@ -48,6 +51,7 @@ public class MainPresenter extends BasePresenter<MainModel, MainActivity> {
             }
             Handler mainHandler = new Handler(Looper.getMainLooper());
             List<Data> finalDataList = dataList;
+            Log.d(TAG, finalDataList.toString());
             mainHandler.post(() -> {
                 mMainActivity.readyForStartShow(finalDataList);
             });
@@ -67,6 +71,7 @@ public class MainPresenter extends BasePresenter<MainModel, MainActivity> {
 
     public List<Data> getMainDataList() throws RemoteException {
         List<Data> dataList = new ArrayList<>();
+//        Log.d(TAG, mServiceFriendInterface.toString());
         User nowUser = mServiceFriendInterface.getNowUser();
         dataList.add(new Data(nowUser));
         List<Moment> momentList = mServiceFriendInterface.getAllMoment();
